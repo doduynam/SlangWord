@@ -13,10 +13,19 @@ public class ReadWriteFile {
             String buf = inFile.readLine();
             while ((buf = inFile.readLine()) != null) {
                 String[] row = buf.split("`");
-                if (row.length ==  1) {
-                    System.out.println(buf);
+                String slag = row[0];
+                ArrayList<String> mean = new ArrayList<String>();
+                if (row[1].indexOf("| ") != -1) {
+                    String[] rowMean = row[1].split("| ");
+                    for(String s : rowMean) {
+                        mean.add(s);
+                    }
                 }
-                result.add(new SlangWord(row[0], row[1]));
+                else {
+                    mean.add(row[1]);
+                }
+
+                result.add(new SlangWord(slag, mean));
             }
 
             inFile.close();
