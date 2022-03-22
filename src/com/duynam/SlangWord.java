@@ -1,10 +1,12 @@
 package com.duynam;
 
+import java.util.ArrayList;
+
 public class SlangWord {
     private String _slag;
-    private String _mean;
+    private ArrayList<String> _mean;
 
-    public SlangWord(String slag, String mean) {
+    public SlangWord(String slag, ArrayList<String> mean) {
         _slag = slag;
         _mean = mean;
     }
@@ -13,11 +15,11 @@ public class SlangWord {
         return _slag;
     }
 
-    public String get_mean() {
+    public ArrayList<String> get_mean() {
         return _mean;
     }
 
-    public void set_mean(String _mean) {
+    public void set_mean(ArrayList<String> _mean) {
         this._mean = _mean;
     }
 
