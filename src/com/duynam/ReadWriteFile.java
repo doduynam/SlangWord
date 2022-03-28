@@ -3,6 +3,7 @@ package com.duynam;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ReadWriteFile {
     public static List<SlangWord> readFile(String filename) {
@@ -15,14 +16,14 @@ public class ReadWriteFile {
                 String[] row = buf.split("`");
                 String slag = row[0];
                 ArrayList<String> mean = new ArrayList<String>();
-                if (row[1].indexOf("| ") != -1) {
-                    String[] rowMean = row[1].split("| ");
+                if (row[1].indexOf("|") != -1) {
+                    String[] rowMean = row[1].split("\\| ");
                     for(String s : rowMean) {
-                        mean.add(s);
+                        mean.add(s.toLowerCase());
                     }
                 }
                 else {
-                    mean.add(row[1]);
+                    mean.add(row[1].toLowerCase());
                 }
 
                 result.add(new SlangWord(slag, mean));
