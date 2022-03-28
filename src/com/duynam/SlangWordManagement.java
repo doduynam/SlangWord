@@ -2,6 +2,7 @@ package com.duynam;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -21,13 +22,30 @@ public class SlangWordManagement {
         return null;
     }
 
+    public ArrayList<SlangWord> findFollowDefinition(String keyword) {
+        ArrayList<SlangWord> result = new ArrayList<SlangWord>();
+        for (SlangWord sl : slangWordList) {
+            for (String s : sl.get_mean()) {
+                if (s.indexOf(keyword) != -1) {
+                    result.add(sl);
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
     //TODO add more function to update quick
     public boolean addSlag(SlangWord slangWord) {
         if(slangWordList.add(slangWord)) {
+            Collections.sort(slangWordList, new CompareSlagAscending());
             return true;
         }
         return false;
     }
+
+
 
     public boolean editSlag(String oldSlag, String newSlag) {
         for (SlangWord sl : slangWordList) {
