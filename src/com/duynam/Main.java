@@ -34,13 +34,13 @@ public class Main {
                     System.out.println("\tTìm kiếm theo slang word.");
                     System.out.print("Nhập vào slang word cần tìm: ");
                     slag = scan.nextLine();
-                    means = slangWordList.findFollowSlag(slag);
-                    if(means.isEmpty()) {
+                    SlangWord sl = slangWordList.findFollowSlag(slag);
+                    if(sl == null) {
                         System.out.println("Không tìm thấy definition cho slang word");
                     }
                     else {
                         System.out.println("Definition: ");
-                        for (String s : means) {
+                        for (String s : sl.get_mean()) {
                             System.out.println("\t - " + s);
                         }
                     }
@@ -89,6 +89,7 @@ public class Main {
                         System.out.println("Thêm thất bại");
                     }
 
+                    means.clear();
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -96,7 +97,51 @@ public class Main {
                 case 5:
                 {
                     System.out.println("\tSửa một slang word.");
+                    System.out.print("Nhập vào slang word cần sửa: ");
+                    slag = scan.nextLine();
 
+                    while (!slangWordList.canFind(slag)) {
+                        System.out.print("Nhập lại slang word cần sửa: ");
+                        slag = scan.nextLine();
+                    }
+
+                    System.out.println("\t1. Sửa slang word.");
+                    System.out.println("\t2. Sửa definition.");
+                    System.out.print("Bạn muốn sửa:");
+                    choice = Integer.parseInt(scan.nextLine());
+
+                    if (choice == 1) {
+                        System.out.print("Nhập vào slang word mới: ");
+                        String newslag = scan.nextLine();
+                        if (slangWordList.editSlag(slag, newslag)) {
+                            System.out.println("Sửa thành công");
+                        }
+                        else {
+                            System.out.println("Sửa thất bại");
+                        }
+                    }
+                    else if (choice == 2) {
+                        System.out.print("Nhập vào definition mới (Nếu slang word có nhiều definition thì nhập cách nhau bằng dấu '|'): ");
+                        String defi = scan.nextLine();
+                        if (defi.indexOf("|") != -1) {
+                            String[] rowMean = defi.split("\\| ");
+                            for(String s : rowMean) {
+                                means.add(s.toLowerCase());
+                            }
+                        }
+                        else {
+                            means.add(defi.toLowerCase());
+                        }
+
+                        if (slangWordList.editMean(slag, means)) {
+                            System.out.println("Sửa thành công");
+                        }
+                        else {
+                            System.out.println("Sửa thất bại");
+                        }
+                    }
+
+                    means.clear();
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -104,6 +149,31 @@ public class Main {
                 case 6:
                 {
                     System.out.println("\tXóa một slang word.");
+                    System.out.print("Nhập vào slang word cần xóa: ");
+                    slag = scan.nextLine();
+
+                    while (!slangWordList.canFind(slag)) {
+                        System.out.print("Nhập lại slang word cần xóa: ");
+                        slag = scan.nextLine();
+                    }
+
+                    SlangWord delSlang = slangWordList.findFollowSlag(slag);
+                    System.out.println("Slang word muốn xóa: ");
+                    System.out.println(delSlang.show());
+
+                    System.out.print("Bạn có muốn xóa slang word này ra khỏi danh sách? (Y/N): ");
+                    String check = scan.nextLine();
+                    if (check.equals("Y") || check.equals("y")) {
+                        if (slangWordList.deleteSlag(delSlang.get_slag())) {
+                            System.out.println("Xóa slang word thành công.");
+                        }
+                        else {
+                            System.out.println("Xóa slang word thất bại.");
+                        }
+                    }
+                    else {
+                        System.out.println("Không xóa slang word khỏi danh sách");
+                    }
 
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
