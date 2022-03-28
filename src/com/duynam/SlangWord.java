@@ -34,4 +34,16 @@ public class SlangWord {
 
         return result;
     }
+
+    public String show() {
+        String result = "";
+
+        result = "Slang word: " + _slag + "\n";
+        result += "Definition:\n";
+        for (String s : _mean) {
+            result += "\t\t" + s + "\n";
+        }
+
+        return result;
+    }
 }
