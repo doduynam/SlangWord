@@ -13,10 +13,10 @@ public class SlangWordManagement {
         slangWordList = ReadWriteFile.readFile("slang.txt");
     }
 
-    public ArrayList<String> findFollowSlag(String slag) {
+    public SlangWord findFollowSlag(String slag) {
         for (SlangWord sl : slangWordList) {
             if (sl.get_slag().equals(slag)) {
-                return sl.get_mean();
+                return sl;
             }
         }
         return null;
@@ -36,7 +36,6 @@ public class SlangWordManagement {
         return result;
     }
 
-    //TODO add more function to update quick
     public boolean addSlag(SlangWord slangWord) {
         if(slangWordList.add(slangWord)) {
             Collections.sort(slangWordList, new CompareSlagAscending());
@@ -79,5 +78,13 @@ public class SlangWordManagement {
         return slangWordList.get(rand.nextInt());
     }
 
+    public boolean canFind(String slag) {
+        for (SlangWord sl : slangWordList) {
+            if (sl.get_slag().equals(slag)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
