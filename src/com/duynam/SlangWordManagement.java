@@ -16,6 +16,7 @@ public class SlangWordManagement {
     public SlangWord findFollowSlag(String slag) {
         for (SlangWord sl : slangWordList) {
             if (sl.get_slag().equals(slag)) {
+                sl.show();
                 return sl;
             }
         }
@@ -37,9 +38,23 @@ public class SlangWordManagement {
     }
 
     public boolean addSlag(SlangWord slangWord) {
-        if(slangWordList.add(slangWord)) {
-            Collections.sort(slangWordList, new CompareSlagAscending());
-            return true;
+        if(!canFind(slangWord.get_slag())) {
+            if (slangWordList.add(slangWord)) {
+                Collections.sort(slangWordList, new CompareSlagAscending());
+                return true;
+            }
+            else {
+                for(SlangWord sl : slangWordList) {
+                    if (sl.get_slag().equals(slangWord.get_slag())) {
+                        ArrayList<String> means = sl.get_mean();
+                        for (String s : slangWord.get_mean()) {
+                            means.add(s);
+                        }
+                        sl.set_mean(means);
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
@@ -66,9 +81,13 @@ public class SlangWordManagement {
         return false;
     }
 
-    public boolean deleteSlag(SlangWord slag) {
-        if(slangWordList.remove(slag)) {
-            return true;
+    public boolean deleteSlag(String slag) {
+        for (SlangWord sl : slangWordList) {
+            if (sl.get_slag().equals(slag)) {
+                if (slangWordList.remove(sl)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
