@@ -16,7 +16,7 @@ public class SlangWordManagement {
     public SlangWord findFollowSlag(String slag) {
         for (SlangWord sl : slangWordList) {
             if (sl.get_slag().equals(slag)) {
-                sl.show();
+                //sl.show();
                 return sl;
             }
         }
