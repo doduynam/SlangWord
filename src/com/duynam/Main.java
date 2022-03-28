@@ -44,6 +44,10 @@ public class Main {
                             System.out.println("\t - " + s);
                         }
                     }
+
+                    means.clear();
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 2:
@@ -54,49 +58,87 @@ public class Main {
 
                     ArrayList<SlangWord> slangs = slangWordList.findFollowDefinition(mean.toLowerCase());
                     for (SlangWord sl : slangs) {
-                        System.out.println(sl);
+                        System.out.println(sl.show());
                     }
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 3:
                 {
+                    System.out.println("\tLịch sử tìm kiếm.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 4:
                 {
+                    System.out.println("\tThêm một slang word mới.");
+                    System.out.print("Nhap vào slang word: ");
+                    slag = scan.nextLine();
+                    System.out.print("Nhập vào definition: ");
+                    mean = scan.nextLine();
 
+                    means.add(mean);
+                    if (slangWordList.addSlag(new SlangWord(slag, means))) {
+                        System.out.println("Thêm thành công");
+                    }
+                    else {
+                        System.out.println("Thêm thất bại");
+                    }
+
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 5:
                 {
+                    System.out.println("\tSửa một slang word.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 6:
                 {
+                    System.out.println("\tXóa một slang word.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 7:
                 {
+                    System.out.println("\tReset sanh sách slang word gốc.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 8:
                 {
+                    System.out.println("\tRandom một slang word.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 9:
                 {
+                    System.out.println("\tĐố vui. Chọn definition cho slang word.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 case 10:
                 {
+                    System.out.println("\tĐố vui. Chọn slang word đúng với definition.");
 
+                    System.out.println("Nhấn enter để tiếp tục!");
+                    scan.nextLine();
                     break;
                 }
                 default:
