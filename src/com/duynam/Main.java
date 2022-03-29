@@ -1,15 +1,16 @@
 package com.duynam;
 
 import javax.security.auth.callback.LanguageCallback;
+import javax.sound.midi.Soundbank;
 import java.lang.reflect.Member;
 import java.util.*;
 
 public class Main {
     public static SlangWordManagement slangWordList = new SlangWordManagement();
+    public static LinkedList<SlangWord> historySlangWord = new LinkedList<SlangWord>(ReadWriteFile.readFile("history.txt"));
 
     public static void main(String[] args) {
         MENU();
-
     }
 
     public static void MENU() {
@@ -18,6 +19,7 @@ public class Main {
         String slag;
         String mean;
         ArrayList<String> means = new ArrayList<String>();
+        Random rand = new Random();
 
         while (true) {
             feature();
@@ -27,6 +29,8 @@ public class Main {
             switch (choice) {
                 case 0:
                 {
+                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
+                    ReadWriteFile.writeFile((List<SlangWord>) historySlangWord, "history.txt");
                     return;
                 }
                 case 1:
@@ -35,6 +39,7 @@ public class Main {
                     System.out.print("Nhập vào slang word cần tìm: ");
                     slag = scan.nextLine();
                     SlangWord sl = slangWordList.findFollowSlag(slag);
+                    historySlangWord.addFirst(sl);
                     if(sl == null) {
                         System.out.println("Không tìm thấy definition cho slang word");
                     }
@@ -59,6 +64,7 @@ public class Main {
                     ArrayList<SlangWord> slangs = slangWordList.findFollowDefinition(mean.toLowerCase());
                     for (SlangWord sl : slangs) {
                         System.out.println(sl.show());
+                        historySlangWord.addFirst(sl);
                     }
 
                     System.out.println("Nhấn enter để tiếp tục!");
@@ -82,14 +88,17 @@ public class Main {
                     mean = scan.nextLine();
 
                     means.add(mean);
-                    if (slangWordList.addSlag(new SlangWord(slag, means))) {
+                    SlangWord sl = new SlangWord(slag, means);
+                    if (slangWordList.addSlag(sl)) {
                         System.out.println("Thêm thành công");
+                        historySlangWord.addFirst(sl);
                     }
                     else {
                         System.out.println("Thêm thất bại");
                     }
 
                     means.clear();
+                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -142,6 +151,7 @@ public class Main {
                     }
 
                     means.clear();
+                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -175,6 +185,7 @@ public class Main {
                         System.out.println("Không xóa slang word khỏi danh sách");
                     }
 
+                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -182,7 +193,10 @@ public class Main {
                 case 7:
                 {
                     System.out.println("\tReset sanh sách slang word gốc.");
+                    slangWordList.resetSlangWordList();
+                    System.out.println("Reset thành công về danh sách slang word gốc");
 
+                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -190,6 +204,8 @@ public class Main {
                 case 8:
                 {
                     System.out.println("\tRandom một slang word.");
+                    SlangWord ranSlag = slangWordList.randomSlag();
+                    System.out.println(ranSlag.show());
 
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
@@ -198,16 +214,70 @@ public class Main {
                 case 9:
                 {
                     System.out.println("\tĐố vui. Chọn definition cho slang word.");
+                    ArrayList<SlangWord> ranList = slangWordList.ranGame();
+                    int count = 1;
+                    int rightAnswer = rand.nextInt(4) + 1;
+                    String rightMean = ranList.get(0).get_mean().get(rand.nextInt(ranList.get(0).get_mean().size()));
 
-                    System.out.println("Nhấn enter để tiếp tục!");
+                    System.out.println("Slang word: " + ranList.get(0).get_slag());
+                    System.out.println("Definition: ");
+                    for (int i = 1; i < 5; i++) {
+                        if (i == rightAnswer) {
+                            System.out.println(String.valueOf(i) + ". " + rightMean);
+                        }
+                        else {
+                            means = ranList.get(count).get_mean();
+                            System.out.println(String.valueOf(i) + ". " + means.get(rand.nextInt(means.size())));
+                            means.clear();
+                            count++;
+                        }
+                    }
+
+                    System.out.print("Nhập câu trả lời của bạn: ");
+                    int answer = Integer.parseInt(scan.nextLine());
+                    if (answer == rightAnswer) {
+                        System.out.println("Chúc mừng bạn đã trả lời đúng.");
+                    }
+                    else {
+                        System.out.println("Câu trả lời của bạn là sai.");
+                        System.out.println("Đáp án đúng là: " + rightMean);
+                    }
+
+                    System.out.println("\nNhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
                 }
                 case 10:
                 {
                     System.out.println("\tĐố vui. Chọn slang word đúng với definition.");
+                    ArrayList<SlangWord> ranList = slangWordList.ranGame();
+                    int count = 1;
+                    int rightAnswer = rand.nextInt(4) + 1;
+                    mean = ranList.get(0).get_mean().get(rand.nextInt(ranList.get(0).get_mean().size()));
 
-                    System.out.println("Nhấn enter để tiếp tục!");
+                    System.out.println("Definition: " + mean);
+                    System.out.println("Slang word: ");
+                    for (int i = 1; i < 5; i++) {
+                        if (i == rightAnswer) {
+                            System.out.println(String.valueOf(i) + ". " + ranList.get(0).get_slag());
+                        }
+                        else {
+                            System.out.println(String.valueOf(i) + ". " + ranList.get(count).get_slag());
+                            count++;
+                        }
+                    }
+
+                    System.out.print("Nhập câu trả lời của bạn: ");
+                    int answer = Integer.parseInt(scan.nextLine());
+                    if (answer == rightAnswer) {
+                        System.out.println("Chúc mừng bạn đã trả lời đúng.");
+                    }
+                    else {
+                        System.out.println("Câu trả lời của bạn là sai.");
+                        System.out.println("Đáp án đúng là: " + ranList.get(0).get_slag());
+                    }
+
+                    System.out.println("\nNhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
                 }
