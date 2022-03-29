@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 public class SlangWordManagement {
-    List<SlangWord> slangWordList = new ArrayList<SlangWord>();
+    ArrayList<SlangWord> slangWordList = new ArrayList<SlangWord>();
 
     public SlangWordManagement() {
         slangWordList = ReadWriteFile.readFile("slang.txt");
     }
 
-    public List<SlangWord> getSlangWordList() {
+    public ArrayList<SlangWord> getSlangWordList() {
         return slangWordList;
     }
 
@@ -46,23 +46,8 @@ public class SlangWordManagement {
     }
 
     public boolean addSlag(SlangWord slangWord) {
-        if(!canFind(slangWord.get_slag())) {
-            if (slangWordList.add(slangWord)) {
-                Collections.sort(slangWordList, new CompareSlagAscending());
-                return true;
-            }
-            else {
-                for(SlangWord sl : slangWordList) {
-                    if (sl.get_slag().equals(slangWord.get_slag())) {
-                        ArrayList<String> means = sl.get_mean();
-                        for (String s : slangWord.get_mean()) {
-                            means.add(s);
-                        }
-                        sl.set_mean(means);
-                        return true;
-                    }
-                }
-            }
+        if (slangWordList.add(slangWord)) {
+            return true;
         }
         return false;
     }
