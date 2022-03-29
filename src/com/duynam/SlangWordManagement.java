@@ -13,6 +13,10 @@ public class SlangWordManagement {
         slangWordList = ReadWriteFile.readFile("slang.txt");
     }
 
+    public void resetSlangWordList() {
+        slangWordList = ReadWriteFile.readFile("original_slangword.txt");
+    }
+
     public SlangWord findFollowSlag(String slag) {
         for (SlangWord sl : slangWordList) {
             if (sl.get_slag().equals(slag)) {
@@ -94,7 +98,7 @@ public class SlangWordManagement {
 
     public SlangWord randomSlag() {
         Random rand = new Random();
-        return slangWordList.get(rand.nextInt());
+        return slangWordList.get(rand.nextInt(slangWordList.size()));
     }
 
     public boolean canFind(String slag) {
@@ -104,6 +108,17 @@ public class SlangWordManagement {
             }
         }
         return false;
+    }
+
+    public ArrayList<SlangWord> ranGame() {
+        ArrayList<SlangWord> ranList = new ArrayList<SlangWord>();
+        Random rand = new Random();
+
+        for (int i = 0; i < 4; i++) {
+            ranList.add(slangWordList.get(rand.nextInt(slangWordList.size())));
+        }
+
+        return ranList;
     }
 
 }
