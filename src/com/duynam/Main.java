@@ -18,7 +18,6 @@ public class Main {
         int choice = 0;
         String slag;
         String mean;
-        ArrayList<String> means = new ArrayList<String>();
         Random rand = new Random();
 
         while (true) {
@@ -30,7 +29,7 @@ public class Main {
                 case 0:
                 {
                     ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
-                    ReadWriteFile.writeFile((List<SlangWord>) historySlangWord, "history.txt");
+                    ReadWriteFile.writeFile(new ArrayList<SlangWord>(historySlangWord), "history.txt");
                     return;
                 }
                 case 1:
@@ -50,7 +49,7 @@ public class Main {
                         }
                     }
 
-                    means.clear();
+                    //means.clear();
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -62,10 +61,16 @@ public class Main {
                     mean = scan.nextLine();
 
                     ArrayList<SlangWord> slangs = slangWordList.findFollowDefinition(mean.toLowerCase());
-                    for (SlangWord sl : slangs) {
-                        System.out.println(sl.show());
-                        historySlangWord.addFirst(sl);
+                    if (slangs.size() == 0) {
+                        System.out.println("Không tìn thấy slang word nào.");
                     }
+                    else {
+                        for (SlangWord sl : slangs) {
+                            System.out.println(sl.show());
+                            historySlangWord.addFirst(sl);
+                        }
+                    }
+
 
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
@@ -74,6 +79,19 @@ public class Main {
                 case 3:
                 {
                     System.out.println("\tLịch sử tìm kiếm.");
+                    System.out.print("Nhập số lượng slang word tìm kiếm gần đây nhất bạn muốn hiển thị: ");
+                    int count = Integer.parseInt(scan.nextLine());
+
+                    if (count >= historySlangWord.size()) {
+                        for (SlangWord sl : historySlangWord) {
+                            System.out.println(sl.show());
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < count; i++) {
+                            System.out.println(historySlangWord.get(i).show());
+                        }
+                    }
 
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
@@ -87,18 +105,18 @@ public class Main {
                     System.out.print("Nhập vào definition: ");
                     mean = scan.nextLine();
 
+                    ArrayList<String> means = new ArrayList<>();
                     means.add(mean);
-                    SlangWord sl = new SlangWord(slag, means);
-                    if (slangWordList.addSlag(sl)) {
+                    //SlangWord sl = new SlangWord(slag, means);
+                    if (slangWordList.addSlag(new SlangWord(slag, means))) {
                         System.out.println("Thêm thành công");
-                        historySlangWord.addFirst(sl);
+                        //historySlangWord.addFirst(sl);
                     }
                     else {
                         System.out.println("Thêm thất bại");
                     }
 
-                    means.clear();
-                    ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
+                    //ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
                     break;
@@ -132,6 +150,8 @@ public class Main {
                     else if (choice == 2) {
                         System.out.print("Nhập vào definition mới (Nếu slang word có nhiều definition thì nhập cách nhau bằng dấu '|'): ");
                         String defi = scan.nextLine();
+                        ArrayList<String> means = new ArrayList<>();
+
                         if (defi.indexOf("|") != -1) {
                             String[] rowMean = defi.split("\\| ");
                             for(String s : rowMean) {
@@ -150,7 +170,7 @@ public class Main {
                         }
                     }
 
-                    means.clear();
+                    //means.clear();
                     ReadWriteFile.writeFile(slangWordList.getSlangWordList(), "slang.txt");
                     System.out.println("Nhấn enter để tiếp tục!");
                     scan.nextLine();
@@ -218,6 +238,7 @@ public class Main {
                     int count = 1;
                     int rightAnswer = rand.nextInt(4) + 1;
                     String rightMean = ranList.get(0).get_mean().get(rand.nextInt(ranList.get(0).get_mean().size()));
+                    ArrayList<String> means = new ArrayList<>();
 
                     System.out.println("Slang word: " + ranList.get(0).get_slag());
                     System.out.println("Definition: ");

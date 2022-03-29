@@ -30,10 +30,12 @@ public class SlangWord {
     @Override
     public String toString() {
         String result = "";
-        result = _slag + "`" + _mean.get(0);
-
-        for (int i = 1; i < _mean.size(); i++) {
-            result += "| " + _mean.get(i);
+        result = _slag + "`";
+        if (_mean.size() > 0) {
+            result += _mean.get(0);
+            for (int i = 1; i < _mean.size(); i++) {
+                result += "| " + _mean.get(i);
+            }
         }
 
         return result;

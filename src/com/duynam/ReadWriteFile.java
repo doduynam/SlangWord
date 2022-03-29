@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ReadWriteFile {
-    public static List<SlangWord> readFile(String filename) {
-        List<SlangWord> result = new ArrayList<SlangWord>();
+    public static ArrayList<SlangWord> readFile(String filename) {
+        ArrayList<SlangWord> result = new ArrayList<SlangWord>();
 
         try {
             BufferedReader inFile = new BufferedReader(new FileReader(filename));
@@ -40,7 +40,7 @@ public class ReadWriteFile {
         return result;
     }
 
-    public static void writeFile(List<SlangWord> slangWordList, String filename) {
+    public static void writeFile(ArrayList<SlangWord> slangWordList, String filename) {
         try {
             BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
             outFile.write("Slag`Meaning\n");
