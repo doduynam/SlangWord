@@ -13,6 +13,10 @@ public class SlangWordManagement {
         slangWordList = ReadWriteFile.readFile("slang.txt");
     }
 
+    public List<SlangWord> getSlangWordList() {
+        return slangWordList;
+    }
+
     public void resetSlangWordList() {
         slangWordList = ReadWriteFile.readFile("original_slangword.txt");
     }
